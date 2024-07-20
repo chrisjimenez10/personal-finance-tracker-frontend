@@ -6,6 +6,8 @@ import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import Landing from './components/Landing';
 
+export const AuthUserContext = createContext(null);
+
 const App = () => {
   //State
   const [user, setUser] = useState(null);
@@ -13,8 +15,10 @@ const App = () => {
   return (
 
     <>
+    <AuthUserContext.Provider value={{user}}>
+      <Navbar />
       <Routes>
-        <Navbar />
+        
         {user ?
         <Route path="/" element={<Dashboard />} />
               :
@@ -22,6 +26,7 @@ const App = () => {
         }
 
       </Routes>
+      </AuthUserContext.Provider>
     </>
 
   )
