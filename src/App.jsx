@@ -2,6 +2,7 @@ import React, { useState, createContext } from 'react';
 import { Routes, Route } from "react-router-dom";
 
 //Components
+import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import Landing from './components/Landing';
 
@@ -13,11 +14,13 @@ const App = () => {
 
     <>
       <Routes>
+        <Navbar />
         {user ?
         <Route path="/" element={<Dashboard />} />
               :
         <Route path="/" element={<Landing />} />
         }
+
       </Routes>
     </>
 
