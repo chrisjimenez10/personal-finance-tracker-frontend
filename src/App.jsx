@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import Landing from './components/Landing';
 import SignUp from './components/Forms/SignUp';
+import SignIn from './components/Forms/SignIn';
 
 export const AuthUserContext = createContext(null);
 
@@ -26,7 +27,9 @@ const App = () => {
         <Route path="/" element={<Landing />} />
         }
 
-        <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path='/signin' element={<SignIn />} />
+
       </Routes>
       </AuthUserContext.Provider>
     </>

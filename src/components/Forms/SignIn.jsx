@@ -1,7 +1,7 @@
-import React, { useState} from 'react';
-import { signUp } from '../../services/authService';
+import React, { useState } from 'react';
+import { signIn } from '../../services/authService';
 
-const SignUp = () => {
+const SignIn = () => {
 
     //State
     const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         const {user_name, password} = formData;
         e.preventDefault();
-        signUp({
+        signIn({
             user_name: user_name,
             password: password
         });
@@ -32,7 +32,6 @@ const SignUp = () => {
 
     const isFormInvalid = () => {
         const {user_name, password, confirm_password} = formData;
-        //Logic using the ampersand that checks for truthiness of values --> We are checking that both user_name and password EXIST (not empty) and that password value is equal to confirm_password, in order for submit button to ENABLE --> Since we use the "disabled" attribute of the submit button, we use the bang (!) operator outside of this logic, so if ANY of the insdie conditions are FALSE it converts to TRUE, which sets the "disabled" attribute to TRUE as well (since we return the boolean value)
         return !(user_name && password && password === confirm_password);
     };
 
@@ -56,4 +55,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp;
+export default SignIn;
