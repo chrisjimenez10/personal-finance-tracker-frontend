@@ -44,7 +44,7 @@ const SignUp = () => {
     setTimeout(()=>{
         setError(null);
         setMessage(null);
-    }, 10000);
+    }, 8000);
 
     const isFormInvalid = () => {
         const {user_name, password, confirm_password} = formData;

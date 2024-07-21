@@ -5,7 +5,7 @@ import { AuthUserContext } from '../../App';
 
 const SignIn = () => {
 
-    const {setUser} = useContext(AuthUserContext);
+    const { setUser, user } = useContext(AuthUserContext);
     const navigate = useNavigate();
 
     //State
@@ -23,6 +23,7 @@ const SignIn = () => {
     const handleSignIn = async (userData) => {
         try{
             const response = await signIn(userData);
+            setUser(response.user);
             setMessage(response.message);
         }catch(error){
             //We are THROWING the error object, which has the field message as a string that we can display in our interface --> Therefore, we can access that string message and set it to the error state variable
@@ -38,6 +39,7 @@ const SignIn = () => {
     const handleSubmit = (e) => {
         const {user_name, password} = formData;
         e.preventDefault();
+
         handleSignIn({
             user_name: user_name,
             password: password
@@ -46,17 +48,22 @@ const SignIn = () => {
             user_name: "",
             password: "",
             confirm_password: "",
-        });
-        setUser(formData);
+        });      
+    };
+
+    //Logic to STAY in Form if provided credentials are INVALID or redirect to Dashboard if valid --> Therefore, user state remains null
+    if(user){
         setTimeout(()=>{
             navigate("/");
-        },2000);
-    };
+        },2000); 
+    }
+
+
         //Using setTimeout() function to invoke state setter function and return state to "null" to hide error message
     setTimeout(()=>{
         setError(null);
         setMessage(null);
-    }, 10000);
+    }, 8000);
 
     const isFormInvalid = () => {
         const {user_name, password, confirm_password} = formData;
