@@ -1,10 +1,17 @@
 import React, { useContext } from 'react';
 import { Link } from "react-router-dom";
 import { AuthUserContext } from '../App';
+import { signOut } from '../services/authTokenService';
 
 const Navbar = () => {
 
-    const {user} = useContext(AuthUserContext);
+    const { user, setUser } = useContext(AuthUserContext);
+
+    //Sign Out Handler Function
+    const handleSignOut = () => {
+        signOut();
+        setUser(null);
+    };
 
   return (
 
@@ -12,7 +19,7 @@ const Navbar = () => {
         {user ?
         <>
             <Link to="/">Dashboard</Link>
-            <Link to="/sign-out">Sign-Out</Link>
+            <Link to="" onClick={handleSignOut}>Sign-Out</Link>
         </> 
               :
         <>

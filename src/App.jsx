@@ -1,5 +1,6 @@
 import React, { useState, createContext } from 'react';
 import { Routes, Route } from "react-router-dom";
+import { getUser } from './services/authTokenService';
 
 //Components
 import Navbar from './components/Navbar';
@@ -13,7 +14,7 @@ export const AuthUserContext = createContext(null);
 
 const App = () => {
   //State
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(getUser());
 
   return (
 
