@@ -4,7 +4,12 @@ const Dashboard = () => {
 
   return (
 
-    <div>Dashboard Page for Authenticated Users</div>
+    <>
+      <h1>Welcome, User</h1>
+      <p>
+        This is the Dashboard for Authenticated Users only.
+      </p>
+    </>
 
   )
 }

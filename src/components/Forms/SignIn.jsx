@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../services/authService';
+import { AuthUserContext } from '../../App';
 
 const SignIn = () => {
+
+    const {setUser} = useContext(AuthUserContext);
+    const navigate = useNavigate();
 
     //State
     const [formData, setFormData] = useState({
@@ -10,13 +15,15 @@ const SignIn = () => {
         confirm_password: "",
     });
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState(null);
 
     //Functions
 
         //SignIn Logic (So we can extract ERROR message)
     const handleSignIn = async (userData) => {
         try{
-            await signIn(userData);
+            const response = await signIn(userData);
+            setMessage(response.message);
         }catch(error){
             //We are THROWING the error object, which has the field message as a string that we can display in our interface --> Therefore, we can access that string message and set it to the error state variable
             setError(error.message);
@@ -40,10 +47,15 @@ const SignIn = () => {
             password: "",
             confirm_password: "",
         });
+        setUser(formData);
+        setTimeout(()=>{
+            navigate("/");
+        },2000);
     };
         //Using setTimeout() function to invoke state setter function and return state to "null" to hide error message
     setTimeout(()=>{
         setError(null);
+        setMessage(null);
     }, 10000);
 
     const isFormInvalid = () => {
@@ -66,12 +78,13 @@ const SignIn = () => {
             <label htmlFor='confirm_password'>Confirm Password: </label>
             <input  type='text' id='confirm_password' name='confirm_password' value={formData.confirm_password} onChange={handleInputChange} required/>
 
-            <button type='submit' disabled={isFormInvalid()}>submit</button>
+            <button type='submit' disabled={isFormInvalid()}>Login</button>
 
         </form>
         
         {error && <p>{error}</p>}
-        
+        {message && <p>{message}</p>}
+
     </>
   )
 }

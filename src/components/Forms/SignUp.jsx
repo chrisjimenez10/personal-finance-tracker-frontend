@@ -10,11 +10,13 @@ const SignUp = () => {
         confirm_password: "",
     });
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState(null);
 
     //Functions
     const handleSignUp = async (userData) => {
         try{
-            await signUp(userData);
+            const response = await signUp(userData);
+            setMessage(response.message);
         }catch(error){
             setError(error.message);
         }
@@ -41,6 +43,7 @@ const SignUp = () => {
 
     setTimeout(()=>{
         setError(null);
+        setMessage(null);
     }, 10000);
 
     const isFormInvalid = () => {
@@ -63,11 +66,12 @@ const SignUp = () => {
             <label htmlFor='confirm_password'>Confirm Password: </label>
             <input  type='text' id='confirm_password' name='confirm_password' value={formData.confirm_password} onChange={handleInputChange} required/>
 
-            <button type='submit' disabled={isFormInvalid()}>submit</button>
+            <button type='submit' disabled={isFormInvalid()}>Register</button>
 
         </form>
 
         {error && <p>{error}</p>}
+        {message && <p>{message}</p>}
 
     </>
   )

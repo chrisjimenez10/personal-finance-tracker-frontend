@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard';
 import Landing from './components/Landing';
 import SignUp from './components/Forms/SignUp';
 import SignIn from './components/Forms/SignIn';
+import Error from './components/Error';
 
 export const AuthUserContext = createContext(null);
 
@@ -17,7 +18,7 @@ const App = () => {
   return (
 
     <>
-    <AuthUserContext.Provider value={{user}}>
+    <AuthUserContext.Provider value={{user, setUser}}>
       <Navbar />
       <Routes>
         
@@ -29,6 +30,7 @@ const App = () => {
 
         <Route path='/signup' element={<SignUp />} />
         <Route path='/signin' element={<SignIn />} />
+        <Route path='*' element={<Error />} />
 
       </Routes>
       </AuthUserContext.Provider>

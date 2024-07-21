@@ -1,3 +1,4 @@
+//Base URL Endpoint for Authentication Routes
 const AUTH_URL = `${import.meta.env.VITE_BACKEND_URL}/users`;
 
 //HTTP Functions
@@ -12,11 +13,18 @@ const signUp = async (userData) => {
                 body: JSON.stringify(userData)
             }
         );
+
+        if(!response.ok){
+            const errorData = await response.json();
+            throw new Error (errorData.error || "An unkown error occured");
+        }
+
         const data = await response.json();
         console.log(data);
         return data;
     }catch(error){
-        console.error(`Error: ${error.message}`);
+        console.error("Error: ", error.message);
+        throw error;
     }
 };
 
@@ -42,6 +50,7 @@ const signIn = async (userData) => {
         console.log(data);
         return data;
     }catch(error){
+        console.error("Error: ", error.message);
         throw error;
     }
 };
