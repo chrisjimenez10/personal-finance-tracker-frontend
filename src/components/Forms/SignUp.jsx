@@ -70,7 +70,6 @@ const SignUp = () => {
         }
     },[error, message]);
 
-
     const isFormInvalid = () => {
         const {user_name, password, confirm_password} = formData;
         //Logic using the ampersand that checks for truthiness of values --> We are checking that both user_name and password EXIST (not empty) and that password value is equal to confirm_password, in order for submit button to ENABLE --> Since we use the "disabled" attribute of the submit button, we use the bang (!) operator outside of this logic, so if ANY of the insdie conditions are FALSE it converts to TRUE, which sets the "disabled" attribute to TRUE as well (since we return the boolean value)

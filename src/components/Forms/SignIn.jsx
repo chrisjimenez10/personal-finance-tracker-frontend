@@ -62,7 +62,6 @@ const SignIn = () => {
         }
     },[user, navigate]);
 
-
     //Using setTimeout() function to invoke state setter function and return state to "null" to hide error message --> NOTE: We are placing the setTimout() functions INSIDE the useEffect() Hook, so we don't cause any unintentional rendering or re-rendering and ONLY activate these functions when the state changes
     useEffect(()=>{
         if(error || message){
@@ -73,7 +72,6 @@ const SignIn = () => {
             return ()=> clearTimeout(timer); //Here, we use clearTimeout() function to clean up the timeout and avoid memory leaks
         }
     },[error, message]);
-
 
     const isFormInvalid = () => {
         const {user_name, password, confirm_password} = formData;
