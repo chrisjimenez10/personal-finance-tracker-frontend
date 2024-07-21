@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../services/authService';
 import { AuthUserContext } from '../../App';
@@ -16,11 +16,12 @@ const SignIn = () => {
     });
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     //Functions
-
         //SignIn Logic (So we can extract ERROR message)
     const handleSignIn = async (userData) => {
+        setLoading(true);
         try{
             const response = await signIn(userData);
             setUser(response.user);
@@ -41,8 +42,8 @@ const SignIn = () => {
         e.preventDefault();
 
         handleSignIn({
-            user_name: user_name,
-            password: password
+            user_name,
+            password
         });
         setFormData({
             user_name: "",
@@ -51,19 +52,28 @@ const SignIn = () => {
         });      
     };
 
-    //Logic to STAY in Form if provided credentials are INVALID or redirect to Dashboard if valid --> Therefore, user state remains null
-    if(user){
-        setTimeout(()=>{
-            navigate("/");
-        },2000); 
-    }
+    //Logic to STAY in Form if provided credentials are INVALID or redirect to Dashboard if VALID
+    useEffect(()=>{
+        if(user){
+            const timer = setTimeout(()=>{
+                navigate("/");
+            },2000); 
+            return ()=> clearTimeout(timer);
+        }
+    },[user, navigate]);
 
 
-        //Using setTimeout() function to invoke state setter function and return state to "null" to hide error message
-    setTimeout(()=>{
-        setError(null);
-        setMessage(null);
-    }, 8000);
+    //Using setTimeout() function to invoke state setter function and return state to "null" to hide error message --> NOTE: We are placing the setTimout() functions INSIDE the useEffect() Hook, so we don't cause any unintentional rendering or re-rendering and ONLY activate these functions when the state changes
+    useEffect(()=>{
+        if(error || message){
+            const timer = setTimeout(()=>{
+                setError(null);
+                setMessage(null);
+            }, 8000);
+            return ()=> clearTimeout(timer); //Here, we use clearTimeout() function to clean up the timeout and avoid memory leaks
+        }
+    },[error, message]);
+
 
     const isFormInvalid = () => {
         const {user_name, password, confirm_password} = formData;
@@ -80,12 +90,12 @@ const SignIn = () => {
             <input  type='text' id='user_name' name='user_name' value={formData.user_name} onChange={handleInputChange} required/>
 
             <label htmlFor='password'>Password: </label>
-            <input  type='text' id='password' name='password' value={formData.password} onChange={handleInputChange} required/>
+            <input  type='password' id='password' name='password' value={formData.password} onChange={handleInputChange} required/>
 
             <label htmlFor='confirm_password'>Confirm Password: </label>
-            <input  type='text' id='confirm_password' name='confirm_password' value={formData.confirm_password} onChange={handleInputChange} required/>
+            <input  type='password' id='confirm_password' name='confirm_password' value={formData.confirm_password} onChange={handleInputChange} required/>
 
-            <button type='submit' disabled={isFormInvalid()}>Login</button>
+            <button type='submit' disabled={isFormInvalid() || loading}>Login</button>
 
         </form>
         

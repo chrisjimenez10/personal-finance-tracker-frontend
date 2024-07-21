@@ -1,7 +1,12 @@
-import React, { useState} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signUp } from '../../services/authService';
+import { AuthUserContext } from '../../App';
 
 const SignUp = () => {
+
+    const { setUser, user } = useContext(AuthUserContext);
+    const navigate = useNavigate();
 
     //State
     const [formData, setFormData] = useState({
@@ -11,11 +16,15 @@ const SignUp = () => {
     });
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
+    const [loading, setLoading] = useState(false); //Using this state to PREVENT multiple form submissions
 
     //Functions
     const handleSignUp = async (userData) => {
+        //Here, we are using the loading state when we invoke this handleSignUp function that is triggered when form is submitted --> The "loading" state variable is inside the "disabled" attribute in the submit button, so it DISABLES the button again to prevent multiple clicks that may lead to multiple form submissions
+        setLoading(true);
         try{
             const response = await signUp(userData);
+            setUser(response.user);
             setMessage(response.message);
         }catch(error){
             setError(error.message);
@@ -30,9 +39,10 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         const {user_name, password} = formData;
         e.preventDefault();
+
         handleSignUp({
-            user_name: user_name,
-            password: password
+            user_name,
+            password
         });
         setFormData({
             user_name: "",
@@ -41,10 +51,25 @@ const SignUp = () => {
         });
     };
 
-    setTimeout(()=>{
-        setError(null);
-        setMessage(null);
-    }, 8000);
+    useEffect(()=>{
+        if(user){
+            const timer = setTimeout(()=>{
+                navigate("/");
+            },2000); 
+            return ()=> clearTimeout(timer);
+        }
+    },[user, navigate]);
+
+    useEffect(()=>{
+        if(error || message){
+            const timer = setTimeout(()=>{
+                setError(null);
+                setMessage(null);
+            }, 8000);
+            return ()=> clearTimeout(timer);
+        }
+    },[error, message]);
+
 
     const isFormInvalid = () => {
         const {user_name, password, confirm_password} = formData;
@@ -66,7 +91,7 @@ const SignUp = () => {
             <label htmlFor='confirm_password'>Confirm Password: </label>
             <input  type='text' id='confirm_password' name='confirm_password' value={formData.confirm_password} onChange={handleInputChange} required/>
 
-            <button type='submit' disabled={isFormInvalid()}>Register</button>
+            <button type='submit' disabled={isFormInvalid() || loading}>Register</button>
 
         </form>
 

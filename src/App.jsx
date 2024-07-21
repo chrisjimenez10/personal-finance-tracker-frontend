@@ -13,7 +13,7 @@ import Error from './components/Error';
 export const AuthUserContext = createContext(null);
 
 const App = () => {
-  //State
+  //State --> Initial state of user will be set from retrieving the decoded JSON payload from the stored Token in the client local storage (This persist user session DESPITE browser refresh) --> NOTE: We MUST send the user data from the route handler in our Backend, so we can retrieve it in the Frontend (This also applies to sending the token itself)
   const [user, setUser] = useState(getUser());
 
   return (

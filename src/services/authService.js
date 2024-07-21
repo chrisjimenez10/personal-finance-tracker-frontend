@@ -20,6 +20,10 @@ const signUp = async (userData) => {
         }
 
         const data = await response.json();
+        if(data.token){
+            localStorage.setItem("token", data.token);
+        }
+
         console.log(data);
         return data;
     }catch(error){
@@ -49,7 +53,6 @@ const signIn = async (userData) => {
         const data = await response.json();
         if(data.token){
             localStorage.setItem("token", data.token);
-            // JSON.parse(atob(data.token.split(".")[1]));
         }
 
         console.log(data);
