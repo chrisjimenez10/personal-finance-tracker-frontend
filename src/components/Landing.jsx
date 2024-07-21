@@ -4,7 +4,12 @@ const Landing = () => {
 
   return (
 
-    <div>Landing</div>
+    <>
+      <h1>Hello, Guest</h1>
+      <p>
+        To get started, please sign-in to your account or sign-up and register a new account.
+      </p>
+    </>
 
   )
 }
