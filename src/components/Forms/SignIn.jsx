@@ -16,12 +16,10 @@ const SignIn = () => {
     });
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     //Functions
         //SignIn Logic (So we can extract ERROR message)
     const handleSignIn = async (userData) => {
-        setLoading(true);
         try{
             const response = await signIn(userData);
             setUser(response.user);
@@ -93,7 +91,7 @@ const SignIn = () => {
             <label htmlFor='confirm_password'>Confirm Password: </label>
             <input  type='password' id='confirm_password' name='confirm_password' value={formData.confirm_password} onChange={handleInputChange} required/>
 
-            <button type='submit' disabled={isFormInvalid() || loading}>Login</button>
+            <button type='submit' disabled={isFormInvalid()}>Login</button>
 
         </form>
         
