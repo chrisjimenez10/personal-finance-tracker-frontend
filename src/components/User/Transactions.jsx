@@ -9,11 +9,15 @@ const Transactions = () => {
 
     //State
     const [transactions, setTransactions] = useState([]);
+    const [userId, setUserId] = useState(null);
+    const [latestTransaction, setLatestTransaction] = useState(null);
 
     //Functions
     const fetchUserTransactionsDB = async () => {
         try{
-            const userData = await fetchUserTransactions(user.id);          
+            const userData = await fetchUserTransactions(user.id);
+            setLatestTransaction(userData[userData.length - 1].total_balance);
+            setUserId(userData[0].user_id);
             setTransactions(userData);
         }catch(error){
             console.error(error.message);
@@ -25,14 +29,16 @@ const Transactions = () => {
     },[]);
 
 
-
   return (
 
     <>
         <h1>{user.user_name}</h1>
+        <dt>User ID: {userId}</dt>
+
+        <h2>Current Total Balance: ${latestTransaction}</h2>
         <ul>
             {transactions.map((transaction)=>{
-                return (
+                return (           
                     <li key={transaction.id}>
                         <dt>Transaction ID: {transaction.id}</dt>
                         <dd>Total Balance: ${transaction.total_balance}</dd>
@@ -44,7 +50,9 @@ const Transactions = () => {
             })}
         </ul>
 
-        <button>View User ID</button>
+        <button>Incoming</button>
+        <button>Outgoing</button>
+
     </>
 
   )
