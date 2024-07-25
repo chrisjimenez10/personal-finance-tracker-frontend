@@ -16,12 +16,10 @@ const SignIn = () => {
     });
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     //Functions
         //SignIn Logic (So we can extract ERROR message)
     const handleSignIn = async (userData) => {
-        setLoading(true);
         try{
             const response = await signIn(userData);
             setUser(response.user);
@@ -62,7 +60,6 @@ const SignIn = () => {
         }
     },[user, navigate]);
 
-
     //Using setTimeout() function to invoke state setter function and return state to "null" to hide error message --> NOTE: We are placing the setTimout() functions INSIDE the useEffect() Hook, so we don't cause any unintentional rendering or re-rendering and ONLY activate these functions when the state changes
     useEffect(()=>{
         if(error || message){
@@ -73,7 +70,6 @@ const SignIn = () => {
             return ()=> clearTimeout(timer); //Here, we use clearTimeout() function to clean up the timeout and avoid memory leaks
         }
     },[error, message]);
-
 
     const isFormInvalid = () => {
         const {user_name, password, confirm_password} = formData;
@@ -95,7 +91,7 @@ const SignIn = () => {
             <label htmlFor='confirm_password'>Confirm Password: </label>
             <input  type='password' id='confirm_password' name='confirm_password' value={formData.confirm_password} onChange={handleInputChange} required/>
 
-            <button type='submit' disabled={isFormInvalid() || loading}>Login</button>
+            <button type='submit' disabled={isFormInvalid()}>Login</button>
 
         </form>
         
