@@ -9,6 +9,7 @@ import Landing from './components/Landing';
 import SignUp from './components/Forms/SignUp';
 import SignIn from './components/Forms/SignIn';
 import Error from './components/Error';
+import Transactions from './components/User/Transactions';
 
 export const AuthUserContext = createContext(null);
 
@@ -24,7 +25,10 @@ const App = () => {
       <Routes>
         
         {user ?
-        <Route path="/" element={<Dashboard />} />
+        <>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/transactions" element={<Transactions />} />
+        </>
               :
         <Route path="/" element={<Landing />} />
         }
