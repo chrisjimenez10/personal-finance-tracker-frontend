@@ -13,4 +13,4 @@ const fetchUserTransactions = async(id) => {
 };
 
 //Export
-export {fetchUserTransactions, };
+export { fetchUserTransactions, };

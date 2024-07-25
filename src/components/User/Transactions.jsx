@@ -13,7 +13,7 @@ const Transactions = () => {
     //Functions
     const fetchUserTransactionsDB = async () => {
         try{
-            const userData = await fetchUserTransactions(user.id);
+            const userData = await fetchUserTransactions(user.id);          
             setTransactions(userData);
         }catch(error){
             console.error(error.message);
@@ -23,6 +23,8 @@ const Transactions = () => {
     useEffect(()=>{
         fetchUserTransactionsDB();
     },[]);
+
+
 
   return (
 
@@ -34,7 +36,7 @@ const Transactions = () => {
                     <li key={transaction.id}>
                         <dt>Transaction ID: {transaction.id}</dt>
                         <dd>Total Balance: ${transaction.total_balance}</dd>
-                        <dd>Date: {transaction.date_transaction}</dd>
+                        <dd>Date: {transaction.date_transaction.split("T")[0]}</dd>
                         <dd>Incoming: ${transaction.income_transaction}</dd>
                         <dd>Outgoing: ${transaction.expense_transaction}</dd>
                     </li>
